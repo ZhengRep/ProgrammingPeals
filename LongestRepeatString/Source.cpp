@@ -4,45 +4,54 @@
 #define MAXLEN 1000
 static int index = 0;
 
-void PrintStrArray(const char** pStrArray)
+void PrintStrArray(const char* printDescription, char** pStrArray)
 {
+	printf(printDescription);
 	for (int i = 0; i < index; i++)
 	{
 		printf("%s\n", pStrArray[i]);
 	}
 }
 
+void swap(char** i, char** j)
+{
+	char* temp = *i;
+	*i = *j;
+	*j = temp;
+}
+
 /*
 quick sort:
 Divide and Conquer sort
 */
-int Partition(char** pArray, int low, int high, char* pivot)
+int Partition(char** pArray, int low, int high)
 {
-	char* array = *pArray;
+	if (pArray == nullptr || low < 0 || high < 1 || low == high) return -1;
+
+	char* pivot = pArray[high];
+	int pivotIndex = high;
 	for (int j = high - 1; j >= low; j--)
 	{
-		if (strcmp(array + j, pivot) > 0) {
+		if (strcmp(*(pArray + j), pivot) > 0) {
 			high--;
-			char* temp = array[high];
-			*(array + high) = *(array + j);
-
+			swap(pArray + j, pArray + high);
 		}
 	}
+	swap(pArray + high, pArray + pivotIndex);
+	return high;
 }
 
-void QuickSort(char** pArray, int low, int high)
+void SortSuffixArray(char** pStrPointerArray, int low, int high)
 {
-	char* array = *pArray;
-	char* pivot = array + high;
-	char* newPivot = Partition()
-}
+	if (*pStrPointerArray == nullptr || low < 0 || high < 1 || low > high) return;
 
-void SortSuffixArray(const char** pStrArray)
-{
-	for (int i = 0; i < index; i++)
-	{
-		strcmp((*pStrArray) + i, (*pStrArray));
-	}
+	if (low == high) return;
+
+	char* pivot = *(pStrPointerArray + high);
+	int newPrivotIndex = Partition(pStrPointerArray, low, high);
+
+	SortSuffixArray(pStrPointerArray, low, newPrivotIndex - 1);
+	SortSuffixArray(pStrPointerArray, newPrivotIndex + 1, high);
 }
 
 /*
@@ -64,10 +73,10 @@ int main()
 	}
 	str[index] = '\0';
 
-	sort()
+	PrintStrArray("Original str array:\n", pStrArray);
+	SortSuffixArray(pStrArray, 0, index - 1);
+	PrintStrArray("Sort str array:\n", pStrArray);
 
-	printf("Print suffix array:\n");
-	PrintStrArray((const char**)pStrArray);
 
 	return 0;
 }
